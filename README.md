@@ -3,6 +3,7 @@ A Golang-based backend service for managing validator creation requests, integra
 
 
 # Steps: 
+## Section 1: 
 - Install Redis from: `https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/`
 - Run the Server (in 1st terminal): 
 ```bash
@@ -11,6 +12,7 @@ redis-server
 - Run the Backend Server (in 2nd terminal): 
 ```bash
 cd backend
+go mod tidy
 go run .
 ```
 - API Call: (To create and store the Validators in DB)
@@ -23,4 +25,21 @@ curl -X POST "http://localhost:8080/validators" -H "Content-Type: application/js
 - API Call: (To get the Validator Status)
 ```bash
 curl -X GET "http://localhost:8080/validators/0aa163c4-dc51-427a-acf4-24eed8c76b16" | jq
+```
+
+## Section 3: 
+- Add Private Key in current session: 
+```bash
+export ETH_PRIVATE_KEY="<Your Private Key>"
+```
+- Fund the address from Faucet: `https://holesky-faucet.pk910.de/` (Make sure to mine atleast 32 ETH for successful transaction)
+- Verify the balance after mining: 
+```bash 
+cast balance <Account Address> --rpc-url https://ethereum-holesky.publicnode.com
+```
+- Execute the script: 
+```bash
+cd holesky-integration
+go mod tidy
+go run . 
 ```
