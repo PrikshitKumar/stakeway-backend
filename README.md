@@ -1,150 +1,191 @@
 # stakeway-backend
-A Golang-based backend service for managing validator creation requests, integrating Redis for storage, and supporting asynchronous processing. The project includes RESTful API endpoints, background task execution, and monitoring capabilities for scalable blockchain infrastructure.
 
+A **Golang-based backend service** for managing validator creation requests, integrating **Redis** for in-memory storage, and supporting **asynchronous processing**. This project includes:
 
-# Steps: 
-## Section 1: 
-- Install Redis from: `https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/`
-- Run the Server (in 1st terminal): 
+- **RESTful API Endpoints** for validator management
+- **Background task execution** for processing validator requests
+- **Monitoring capabilities** via **Prometheus & Grafana**
+- **Docker & Kubernetes** integration for scalability
+
+---
+
+## 🛠️ Setup & Installation
+
+### **Section 1: Local Development**
+
+#### **1️⃣ Install Redis**  
+Follow the installation guide: [Redis Installation](https://redis.io/docs/latest/operate/oss_and_stack/install/install-redis/)
+
+#### **2️⃣ Start Redis Server**  
+Run in the first terminal:
 ```bash
 redis-server
 ```
-- Run the Backend Server (in 2nd terminal): 
+
+#### **3️⃣ Start the Backend Server**  
+Run in the second terminal:
 ```bash
 cd backend
 go mod tidy
 go run .
 ```
-- API Call: (To create and store the Validators in DB)
+
+#### **4️⃣ Test API Endpoints**  
+- **Create and Store Validators**
 ```bash
 curl -X POST "http://localhost:8080/validators" -H "Content-Type: application/json" -d '{
   "num_validators": 5,
   "fee_recipient": "0x1234567890abcdef1234567890abcdef12345678"
 }'
 ```
-- API Call: (To get the Validator Status)
+- **Get Validator Status**
 ```bash
 curl -X GET "http://localhost:8080/validators/0aa163c4-dc51-427a-acf4-24eed8c76b16" | jq
 ```
 
-## Section 2: 
-- cd backend
-- Make Sure to install the docker first. 
-- Up the Services in Container after build
+---
+
+### **Section 2: Docker & Kubernetes Deployment**
+
+#### **1️⃣ Start Services with Docker**  
+- Ensure Docker is installed and running, then run:
 ```bash
+cd backend
 docker-compose up --build
 ```
 
-- Test the API calls: 
+#### **2️⃣ Test API Calls (Same as Section 1)**  
+- **Create and Store Validators**
 ```bash
 curl -X POST "http://localhost:8080/validators" -H "Content-Type: application/json" -d '{
   "num_validators": 5,
   "fee_recipient": "0x1234567890abcdef1234567890abcdef12345678"
 }'
 ```
+- **Get Validator Status**
 ```bash
 curl -X GET "http://localhost:8080/validators/0aa163c4-dc51-427a-acf4-24eed8c76b16" | jq
 ```
 
-K8s integration: 
-- cd k8s
-- Install Minikube (Local Kubernates Cluster): 
+#### **3️⃣ Kubernetes (K8s) Integration**  
+- **Navigate to k8s folder**
 ```bash
-brew install minikube (for macOS)
+cd k8s
+```
+- **Install Minikube (Local K8s Cluster)**  
+```bash
+brew install minikube  # For macOS
 minikube version
 ```
-- Start Minikube Cluster
+
+- **Start Minikube Cluster**
 ```bash
-# If running the cluster again, make sure to use stop and delete CLI before starting the cluster
-minikube stop 
+# Before restarting the cluster, ensure you stop and delete it using the CLI first.
+minikube stop
 minikube delete
 minikube start
 minikube status
 ```
 
-- Deploy the Backend and Refis on Minikube (Light weight Cluster): 
+- **Deploy Backend & Redis to Minikube**
 ```bash
 eval $(minikube -p minikube docker-env)
-cd .. 
+cd ..
 docker build -t stakeway-backend .
 docker pull redis:alpine
 ```
-- Apply Kubernetes YAML Files
+
+- **Apply Kubernetes YAML Files**
 ```bash
 cd k8s/
 kubectl apply -f ./  
 ```
-- Wait for a minute to get all the services up. 
-- Verify the Deployment of Pods and Services: 
+
+- Wait a minute for all services to start up. 
+
+- **Verify Deployment**
 ```bash
 kubectl get pods
 kubectl get services
-minikube ip
+minikube service backend-service --url # To get POD URL
+minikube ip # To get exposed IP
 ```
 
-- Route Forwading to communicate with Pods: 
+- **Port Forwarding to Access Services from client side**
 ```bash
 kubectl port-forward svc/backend-service 8080:80
 kubectl port-forward svc/prometheus-service 9090:9090
 kubectl port-forward svc/grafana-service 3000:3000
 ```
 
-- Test the APIs: 
+- **Test API Calls (Same as Section 1)**  
+- **Create and Store Validators**
 ```bash
-curl -X POST "http://127.0.0.1:8080/validators" -H "Content-Type: application/json" -d '{
+curl -X POST "http://localhost:8080/validators" -H "Content-Type: application/json" -d '{
   "num_validators": 5,
   "fee_recipient": "0x1234567890abcdef1234567890abcdef12345678"
 }'
 ```
+- **Get Validator Status**
 ```bash
-curl -X GET "http://127.0.0.1:8080/validators/778aa6c7-56a3-4c76-a498-28b41d5d249f" | jq
+curl -X GET "http://localhost:8080/validators/778aa6c7-56a3-4c76-a498-28b41d5d249f" | jq
 ```
 
-UIs can be accessible throug: 
-- Prometheus: http://localhost:9090/
-- Grafna: http://localhost:3000/
-Username: admin, Password: admin
+#### **4️⃣ Access Monitoring UIs**  
+- **Prometheus:** [http://localhost:9090/](http://localhost:9090/)
+  - Search for `http_requests_total` in Prometheus UI to get the metrics data. 
+- **Grafana:** [http://localhost:3000/](http://localhost:3000/)  
+  - Username: `admin`
+  - Password: `admin`
 
-- Search for `http_requests_total` in Prometheus UI to get the metrics data. 
+#### **5️⃣ Set Up Grafana Dashboard**  
+- **Step 1: Connect to Prometheus**
+  - Go to **Connections → Data Sources**
+  - Click **Add Data Source** → Select **Prometheus**
+  - Set **URL** to: `http://prometheus-service.default.svc.cluster.local:9090`
+  - Click **Save & Test** → `Grafana is connected to Prometheus!`
 
-Follow the steps to setup the Dashboard in Grafana: 
-Step 1: 
-Go to: Connections → Data Sources
-Click: Add Data Source
-Select: Prometheus
-Set URL to: `http://prometheus-service.default.svc.cluster.local:9090`
-Click: Save & Test
-`Grafana is connected to Prometheus!`
+- **Step 2: Create API Metrics Dashboard**
+  - Navigate to **Dashboards → Create Dashboard → Add Visualization**
+  - Select **Prometheus** as the **Data Source**
+  - Under `Query` section, choose `__name__` in **Label filters**
+  - Enter: `http_requests_total` in **Select Value**
+  - Click **Run Queries → Save** the dashboard
+  - Switch to **Graph Mode** → Save as `API Metrics Dashboard`
 
-Step 2: Create a New Dashboard
-Go to: Dashboards → Create Dashboard → Add Visualization -> Select Prometheus for Data Source
-Under `Query` section, enter:
-Choose `__name__` in Label filters and Enter: `http_requests_total` in Select Value. 
-Click: Run Queries
-Save the dashboard
-Switch to "Graph" mode
-Click: Save (Name it: API Metrics Dashboard)
+✅ **Now, API request counts will update in real-time!**
 
-✅ Now, we can see API request counts updating in real-time!
+---
 
+### **Section 3: Holesky Network Integration**
 
-## Section 3: 
-- Add Private Key in current session: 
+#### **1️⃣ Set Private Key in Session**  
 ```bash
 export ETH_PRIVATE_KEY="<Your Private Key>"
 ```
-- Fund the address from Faucet: `https://holesky-faucet.pk910.de/` (Make sure to mine atleast 32 ETH for successful transaction)
-- Verify the balance after mining: 
-```bash 
+
+#### **2️⃣ Fund Your Address**  
+Use the [Holesky Faucet](https://holesky-faucet.pk910.de/) to get at least **33 ETH**.
+
+#### **3️⃣ Verify ETH Balance**  
+```bash
 cast balance <Account Address> --rpc-url https://ethereum-holesky.publicnode.com
 ```
-- Execute the script: 
+
+#### **4️⃣ Run the Script**  
 ```bash
 cd holesky-integration
 go mod tidy
-go run . 
+go run .
 ```
 
-- TxHash for my successful transaction: `0x54e6231a2b37353cfc9f6715282f3f553adc8d72d17af47666e563f6496b626c`
-- Verify the transaction from Explorer: `https://holesky.etherscan.io/tx/0x54e6231a2b37353cfc9f6715282f3f553adc8d72d17af47666e563f6496b626c`
-- Filter the transactions from address: `0x2fA0e97dc0bc4A5C65A700dc9e364f158853B1A4` to verify the iterations. 
+#### **5️⃣ Verify Transaction**  
+- **Transaction Hash:** `0x54e6231a2b37353cfc9f6715282f3f553adc8d72d17af47666e563f6496b626c`
+- **Explorer:** [View on Holesky Etherscan](https://holesky.etherscan.io/tx/0x54e6231a2b37353cfc9f6715282f3f553adc8d72d17af47666e563f6496b626c)
+- **Filter transactions from address:** `0x2fA0e97dc0bc4A5C65A700dc9e364f158853B1A4`
+
+---
+
+## 🎯 **Final Notes**
+- Follow each section carefully for a smooth setup and seamless interactions.
+- Reach out if you encounter any issues! 🚀
