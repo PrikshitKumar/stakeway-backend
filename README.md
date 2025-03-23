@@ -68,18 +68,19 @@ eval $(minikube -p minikube docker-env)
 cd .. 
 docker build -t stakeway-backend .
 docker pull redis:alpine
-cd k8s/
 ```
 - Apply Kubernetes YAML Files
 ```bash
+cd k8s/
 kubectl apply -f ./  
 ```
+- Wait for a minute to get all the services up. 
 - Verify the Deployment of Pods and Services: 
 ```bash
 kubectl get pods
 kubectl get services
 minikube service backend-service --url
-OR
+
 minikube ip
 ```
 
@@ -87,6 +88,7 @@ minikube ip
 ```bash
 kubectl port-forward svc/backend-service 8080:80
 kubectl port-forward svc/prometheus-service 9090:9090
+kubectl port-forward svc/grafana-service 3000:3000
 ```
 
 - Test the APIs: 
@@ -99,6 +101,11 @@ curl -X POST "http://127.0.0.1:8080/validators" -H "Content-Type: application/js
 ```bash
 curl -X GET "http://127.0.0.1:8080/validators/778aa6c7-56a3-4c76-a498-28b41d5d249f" | jq
 ```
+
+UIs can be accessible throug: 
+- Prometheus: http://localhost:9090/
+- Grafna: http://localhost:3000/
+Username: admin, Password: admin
 
 
 ## Section 3: 
