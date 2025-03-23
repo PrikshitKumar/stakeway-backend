@@ -55,6 +55,9 @@ minikube version
 ```
 - Start Minikube Cluster
 ```bash
+# If running the cluster again, make sure to use stop and delete CLI before starting the cluster
+minikube stop 
+minikube delete
 minikube start
 minikube status
 ```
@@ -76,11 +79,14 @@ kubectl apply -f ./
 kubectl get pods
 kubectl get services
 minikube service backend-service --url
+OR
+minikube ip
 ```
 
 - Route Forwading to communicate with Pods: 
 ```bash
 kubectl port-forward svc/backend-service 8080:80
+kubectl port-forward svc/prometheus-service 9090:9090
 ```
 
 - Test the APIs: 
