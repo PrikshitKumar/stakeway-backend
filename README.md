@@ -145,5 +145,6 @@ go mod tidy
 go run . 
 ```
 
-- TxHash for my successful transaction: ``
-- Verify the transaction from Explorer: ``
+- TxHash for my successful transaction: `0x54e6231a2b37353cfc9f6715282f3f553adc8d72d17af47666e563f6496b626c`
+- Verify the transaction from Explorer: `https://holesky.etherscan.io/tx/0x54e6231a2b37353cfc9f6715282f3f553adc8d72d17af47666e563f6496b626c`
+- Filter the transactions from address: `0x2fA0e97dc0bc4A5C65A700dc9e364f158853B1A4` to verify the iterations. 
