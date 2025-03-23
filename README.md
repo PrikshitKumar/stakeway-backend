@@ -78,12 +78,20 @@ kubectl get services
 minikube service backend-service --url
 ```
 
+- Route Forwading to communicate with Pods: 
+```bash
+kubectl port-forward svc/backend-service 8080:80
+```
+
 - Test the APIs: 
 ```bash
-curl -X POST "http://192.168.49.2:30000/validators" -H "Content-Type: application/json" -d '{
+curl -X POST "http://127.0.0.1:8080/validators" -H "Content-Type: application/json" -d '{
   "num_validators": 5,
   "fee_recipient": "0x1234567890abcdef1234567890abcdef12345678"
 }'
+```
+```bash
+curl -X GET "http://127.0.0.1:8080/validators/778aa6c7-56a3-4c76-a498-28b41d5d249f" | jq
 ```
 
 

@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: backend-config
 data:
-  REDIS_HOST: "redis-service:6379"
+  REDIS_HOST: "redis:6379"
