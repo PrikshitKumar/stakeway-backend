@@ -11,6 +11,12 @@ A **Golang-based backend service** for managing validator creation requests, int
 
 ## 🛠️ Setup & Installation
 
+### Clone the repository: 
+```bash
+git clone https://github.com/PrikshitKumar/stakeway-backend.git
+cd stakeway-backend
+```
+
 ### **Section 1: Local Development**
 
 #### **1️⃣ Install Redis**  
