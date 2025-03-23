@@ -161,6 +161,17 @@ curl -X GET "http://localhost:8080/validators/778aa6c7-56a3-4c76-a498-28b41d5d24
 
 ✅ **Now, API request counts will update in real-time!**
 
+If you encounter any difficulties during setup, refer to the following **Loom Recordings**:  
+
+- **[Stakeway Backend - Server Interactions + Docker Setup](https://www.loom.com/share/ab4952b8aad641649956798bf8a52141?sid=da8ac235-0854-4e64-abcd-3402eac79f26)**  
+  Covers server interactions and setting up Docker.  
+
+- **[Stakeway Backend - Docker Testing + Kubernetes Integration + Monitoring Tools (Prometheus & Grafana)](https://www.loom.com/share/a7e025ae48ed4caf841e56c734f47b03?sid=6d3ee048-c99c-4f09-8e02-5759350e6dae)**  
+  Demonstrates Docker testing, Kubernetes integration, and monitoring setup with Prometheus and Grafana.  
+
+- **[Stakeway Backend - Prometheus & Grafana Setup + Metrics Visualization](https://www.loom.com/share/0afa49aab3e14a1caa62ff9c5f486b9d?sid=aa04de73-b102-49f1-8fc1-d26a0c09fbe7)**  
+  Walks through setting up Prometheus and Grafana, including real-time metrics visualization.  
+
 ---
 
 ### **Section 3: Holesky Network Integration**
