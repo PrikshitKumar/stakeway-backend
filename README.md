@@ -199,7 +199,7 @@ go run .
 #### **5️⃣ Verify Transaction**  
 - **Transaction Hash:** `0x54e6231a2b37353cfc9f6715282f3f553adc8d72d17af47666e563f6496b626c`
 - **Explorer:** [View on Holesky Etherscan](https://holesky.etherscan.io/tx/0x54e6231a2b37353cfc9f6715282f3f553adc8d72d17af47666e563f6496b626c)
-- **Filter transactions from address:** `0x2fA0e97dc0bc4A5C65A700dc9e364f158853B1A4`
+- **Filter the transactions from address to verify the development and testing iteration:** `0x2fA0e97dc0bc4A5C65A700dc9e364f158853B1A4`
 
 ---
 
