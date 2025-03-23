@@ -79,8 +79,6 @@ kubectl apply -f ./
 ```bash
 kubectl get pods
 kubectl get services
-minikube service backend-service --url
-
 minikube ip
 ```
 
@@ -106,6 +104,8 @@ UIs can be accessible throug:
 - Prometheus: http://localhost:9090/
 - Grafna: http://localhost:3000/
 Username: admin, Password: admin
+
+- Search for `http_requests_total` in Prometheus UI to get the metrics data. 
 
 Follow the steps to setup the Dashboard in Grafana: 
 Step 1: 
