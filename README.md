@@ -107,6 +107,26 @@ UIs can be accessible throug:
 - Grafna: http://localhost:3000/
 Username: admin, Password: admin
 
+Follow the steps to setup the Dashboard in Grafana: 
+Step 1: 
+Go to: Connections → Data Sources
+Click: Add Data Source
+Select: Prometheus
+Set URL to: `http://prometheus-service.default.svc.cluster.local:9090`
+Click: Save & Test
+`Grafana is connected to Prometheus!`
+
+Step 2: Create a New Dashboard
+Go to: Dashboards → Create Dashboard → Add Visualization -> Select Prometheus for Data Source
+Under `Query` section, enter:
+Choose `__name__` in Label filters and Enter: `http_requests_total` in Select Value. 
+Click: Run Queries
+Save the dashboard
+Switch to "Graph" mode
+Click: Save (Name it: API Metrics Dashboard)
+
+✅ Now, we can see API request counts updating in real-time!
+
 
 ## Section 3: 
 - Add Private Key in current session: 
