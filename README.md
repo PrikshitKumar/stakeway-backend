@@ -27,6 +27,25 @@ curl -X POST "http://localhost:8080/validators" -H "Content-Type: application/js
 curl -X GET "http://localhost:8080/validators/0aa163c4-dc51-427a-acf4-24eed8c76b16" | jq
 ```
 
+## Section 2: 
+- cd backend
+- Make Sure to install the docker first. 
+- Up the Services in Container after build
+```bash
+docker-compose up --build
+```
+
+- Test the API calls: 
+```bash
+curl -X POST "http://localhost:8080/validators" -H "Content-Type: application/json" -d '{
+  "num_validators": 5,
+  "fee_recipient": "0x1234567890abcdef1234567890abcdef12345678"
+}'
+```
+```bash
+curl -X GET "http://localhost:8080/validators/0aa163c4-dc51-427a-acf4-24eed8c76b16" | jq
+```
+
 ## Section 3: 
 - Add Private Key in current session: 
 ```bash
@@ -43,3 +62,6 @@ cd holesky-integration
 go mod tidy
 go run . 
 ```
+
+- TxHash for my successful transaction: ``
+- Verify the transaction from Explorer: ``

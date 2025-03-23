@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"github.com/redis/go-redis/v9"
@@ -15,10 +16,19 @@ var rdb *redis.Client
 
 func InitRedis() {
 	fmt.Println("Inside InitRedis() function...")
+	redisHost := ""
+	if isRunningInDocker() {
+		redisHost = "redis:6379" // Docker's host mapping
+	} else {
+		redisHost = "localhost:6379" // local Redis
+	}
+
+	fmt.Println("Redis Host: " + redisHost)
+
 	rdb = redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379", // Redis server address
-		Password: "",               // No password by default
-		DB:       0,                // Default DB
+		Addr:     redisHost, // Redis server address
+		Password: "",        // No password by default
+		DB:       0,         // Default DB
 	})
 
 	// Test connection
@@ -38,7 +48,7 @@ func SetRequestStatus(requestID, status string, keys []string) error {
 
 	var validatorRequest ValidatorRequest
 	if err := json.Unmarshal([]byte(data), &validatorRequest); err != nil {
-		return err // Failed to parse
+		return err 
 	}
 
 	// Update status & keys
@@ -68,4 +78,9 @@ func GetRequestStatus(requestID string) (*ValidatorRequest, error) {
 	}
 
 	return &validatorRequest, nil
+}
+
+func isRunningInDocker() bool {
+	_, err := os.Stat("/.dockerenv")
+	return err == nil
 }
