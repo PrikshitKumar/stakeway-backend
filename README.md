@@ -46,6 +46,47 @@ curl -X POST "http://localhost:8080/validators" -H "Content-Type: application/js
 curl -X GET "http://localhost:8080/validators/0aa163c4-dc51-427a-acf4-24eed8c76b16" | jq
 ```
 
+K8s integration: 
+- cd k8s
+- Install Minikube (Local Kubernates Cluster): 
+```bash
+brew install minikube (for macOS)
+minikube version
+```
+- Start Minikube Cluster
+```bash
+minikube start
+minikube status
+```
+
+- Deploy the Backend and Refis on Minikube (Light weight Cluster): 
+```bash
+eval $(minikube -p minikube docker-env)
+cd .. 
+docker build -t stakeway-backend .
+docker pull redis:alpine
+cd k8s/
+```
+- Apply Kubernetes YAML Files
+```bash
+kubectl apply -f ./  
+```
+- Verify the Deployment of Pods and Services: 
+```bash
+kubectl get pods
+kubectl get services
+minikube service backend-service --url
+```
+
+- Test the APIs: 
+```bash
+curl -X POST "http://192.168.49.2:30000/validators" -H "Content-Type: application/json" -d '{
+  "num_validators": 5,
+  "fee_recipient": "0x1234567890abcdef1234567890abcdef12345678"
+}'
+```
+
+
 ## Section 3: 
 - Add Private Key in current session: 
 ```bash
